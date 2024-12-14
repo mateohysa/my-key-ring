@@ -1,0 +1,9 @@
+# .NET Core
+bin/
+obj/
+*.user
+*.suo
+
+
+# VS Code
+.vscode/
