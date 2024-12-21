@@ -6,8 +6,12 @@ public class GrainRepository
 
     public GrainRepository()
     {
-        string dbPath = Path.Combine(Application.StartupPath, "pswmanager.db");
-        connectionString = $"Data Source={dbPath}";
+        string dbPath = @"C:\Users\User\Documents\code\C#Class\password-manager-project\pswmanager.db";
+        connectionString = new SqliteConnectionStringBuilder
+        {
+            DataSource = dbPath,
+            Mode = SqliteOpenMode.ReadWriteCreate
+        }.ToString();
     }
 
     public async Task<List<Grain>> GetGrainsByUserId(int userId)
