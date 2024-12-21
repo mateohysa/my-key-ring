@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using System.Windows.Forms;
+using password_manager_project.encryption;
 
 public class UserRepository
 {
@@ -44,6 +45,8 @@ public class UserRepository
     {
         try
         {
+            string hashedPassword = PasswordHasher.HashPassword(user.MasterPassword);
+            
             using (var connection = new SqliteConnection(connectionString))
             {
                 await connection.OpenAsync();
@@ -51,7 +54,7 @@ public class UserRepository
                 command.CommandText = 
                     "INSERT INTO user (username, master_password) VALUES (@username, @master_password)";
                 command.Parameters.AddWithValue("@username", user.Username);
-                command.Parameters.AddWithValue("@master_password", user.MasterPassword);
+                command.Parameters.AddWithValue("@master_password", hashedPassword);
                 await command.ExecuteNonQueryAsync();
             }
         }
@@ -59,7 +62,7 @@ public class UserRepository
         {
             MessageBox.Show($"Database error in CreateUser: {ex.Message}", "Error", 
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-            throw; // Re-throw to handle in the UI
+            throw;
         }
     }
 

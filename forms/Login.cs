@@ -1,3 +1,4 @@
+using password_manager_project.encryption;
 namespace password_manager_project;
 
 public partial class Login : Form
@@ -222,7 +223,7 @@ public partial class Login : Form
             var userRepository = new UserRepository();
             var user = userRepository.GetUser(username);
 
-            if (user != null && user.MasterPassword == password)
+            if (user != null && PasswordHasher.VerifyPassword(password, user.MasterPassword))
             {
                 this.Hide();
                 var mainForm = new MainForm(username);
