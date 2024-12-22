@@ -5,9 +5,9 @@ public partial class Login : Form
 {
     private readonly Button loginButton;
     private readonly Button createProfileButton;
-    private Panel welcomePanel;
-    private Panel loginPanel;
-    private Panel createAccountPanel;
+    private Panel welcomePanel = null!;
+    private Panel loginPanel = null!;
+    private Panel createAccountPanel = null!;
     
     // Login panel controls
     private TextBox? usernameTextBox;
@@ -22,6 +22,23 @@ public partial class Login : Form
 
     public Login()
     {
+        try
+        {
+            string iconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources", "key.ico");
+            if (File.Exists(iconPath))
+            {
+                this.Icon = new Icon(iconPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Silently continue if icon can't be loaded
+            System.Diagnostics.Debug.WriteLine($"Icon load error: {ex.Message}");
+        }
+
+        // Remove or comment out this line
+        // this.Icon = new Icon("resources/key.ico");
+        
         // Initialize readonly buttons in constructor
         loginButton = new Button
         {
@@ -334,48 +351,49 @@ public partial class Login : Form
         cancelButton.Click += (s, e) => ShowWelcomePanel();
     }
 
-    private void CreateAccount_Click(object sender, EventArgs e)
+    private void CreateAccount_Click(object? sender, EventArgs e)
     {
-        try
+        if (newUsernameTextBox?.Text == null || 
+            newPasswordTextBox?.Text == null || 
+            confirmPasswordTextBox?.Text == null)
         {
-            string username = newUsernameTextBox.Text;
-            string password = newPasswordTextBox.Text;
-            string confirmPassword = confirmPasswordTextBox.Text;
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                MessageBox.Show("Please fill in all fields.", "Registration Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (password != confirmPassword)
-            {
-                MessageBox.Show("Passwords do not match!", "Registration Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var userRepository = new UserRepository();
-            var newUser = new User
-            {
-                Username = username,
-                MasterPassword = password
-            };
-
-            userRepository.CreateUser(newUser).Wait();
-            MessageBox.Show("Account created successfully!", "Success", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            this.Hide();
-            var mainForm = new MainForm(username);
-            mainForm.Show();
+            MessageBox.Show("Please fill in all fields.", "Registration Error", 
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
         }
-        catch (Exception ex)
+
+        string username = newUsernameTextBox.Text;
+        string password = newPasswordTextBox.Text;
+        string confirmPassword = confirmPasswordTextBox.Text;
+
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            MessageBox.Show($"Account creation error: {ex.Message}\n\nStack trace: {ex.StackTrace}", 
-                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Please fill in all fields.", "Registration Error", 
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
         }
+
+        if (password != confirmPassword)
+        {
+            MessageBox.Show("Passwords do not match!", "Registration Error", 
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        var userRepository = new UserRepository();
+        var newUser = new User
+        {
+            Username = username,
+            MasterPassword = password
+        };
+
+        userRepository.CreateUser(newUser).Wait();
+        MessageBox.Show("Account created successfully!", "Success", 
+            MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        this.Hide();
+        var mainForm = new MainForm(username);
+        mainForm.Show();
     }
 
     private void ShowWelcomePanel()

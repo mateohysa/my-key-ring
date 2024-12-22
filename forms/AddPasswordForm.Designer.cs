@@ -1,4 +1,6 @@
-partial class MainForm
+namespace password_manager_project;
+
+partial class AddPasswordForm
 {
     /// <summary>
     /// Required designer variable.
@@ -24,17 +26,17 @@ partial class MainForm
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
+    public void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
         this.SuspendLayout();
-
-        this.ClientSize = new System.Drawing.Size(1280, 720);  // 16:9 ratio
+        // 
+        // AddPasswordForm
+        // 
         this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.Name = "MainForm";
-        this.Text = "MyKeyRing";
-
+        this.ClientSize = new System.Drawing.Size(400, 300);
+        this.Name = "AddPasswordForm";
+        this.Text = "Add New Password";
         this.ResumeLayout(false);
     }
 

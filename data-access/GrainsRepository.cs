@@ -33,7 +33,9 @@ public class GrainRepository
                         Id = reader.GetInt32(0),
                         ServiceName = reader.GetString(1),
                         Password = reader.GetString(2),
-                        UserId = reader.GetInt32(3)
+                        UserId = reader.GetInt32(3),
+                        CreatedAt = reader.GetDateTime(4),
+                        UpdatedAt = reader.GetDateTime(5)
                     });
                 }
             }
