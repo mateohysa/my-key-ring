@@ -59,7 +59,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 🙏 Acknowledgments
 
-- Icons from [Icon Library Name]
 - UI inspiration from modern password managers and Apple Keychain
 - Security best practices from AES encryption.
 
