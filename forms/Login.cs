@@ -384,7 +384,7 @@ public partial class Login : Form
         var newUser = new User
         {
             Username = username,
-            MasterPassword = password
+            MasterPassword = PasswordHasher.HashPassword(password)
         };
 
         userRepository.CreateUser(newUser).Wait();

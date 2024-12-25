@@ -455,7 +455,7 @@ public partial class MainForm : Form
                     emailItem.BackColor = Color.FromArgb(230, 240, 255);
                 }
 
-                item.SubItems.Add(new string('•', pwd.Password.Length));
+                item.SubItems.Add("••••••••");  // Just show bullets, don't try to decrypt here
                 item.SubItems.Add(pwd.CreatedAt.ToString("MM/dd/yyyy"));
                 item.Tag = pwd;
                 passwordList.Items.Add(item);
@@ -490,7 +490,8 @@ public partial class MainForm : Form
                     emailItem.BackColor = Color.FromArgb(230, 240, 255);
                 }
 
-                item.SubItems.Add(new string('•', pwd.Password.Length));
+                var decryptedPassword = PasswordEncryption.Decrypt(pwd.Password);
+                item.SubItems.Add(new string('•', decryptedPassword.Length));
                 var daysAgo = (DateTime.Now - pwd.UpdatedAt).Days;
                 item.SubItems.Add($"Updated {daysAgo} days ago");
                 item.Tag = pwd;
@@ -526,7 +527,8 @@ public partial class MainForm : Form
                     emailItem.BackColor = Color.FromArgb(230, 240, 255);
                 }
 
-                item.SubItems.Add(new string('•', pwd.Password.Length));
+                var decryptedPassword = PasswordEncryption.Decrypt(pwd.Password);
+                item.SubItems.Add(new string('•', decryptedPassword.Length));
                 item.SubItems.Add(pwd.CreatedAt.ToString("MM/dd/yyyy"));
                 item.Tag = pwd;
                 keysListInSuggested.Items.Add(item);
@@ -602,7 +604,7 @@ public partial class MainForm : Form
             {
                 selectedServiceLabel.Text = grain.ServiceName;
                 selectedEmailLabel.Text = grain.Email;
-                selectedPasswordBox.Text = grain.Password;
+                selectedPasswordBox.Text = PasswordEncryption.Decrypt(grain.Password);
                 selectedPasswordPanel.Visible = true;
                 editButton.Enabled = true;
             }

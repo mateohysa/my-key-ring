@@ -75,7 +75,7 @@ public class EditPasswordForm : Form
             Size = new Size(300, 30),
             UseSystemPasswordChar = true,
             Font = new Font("SF Pro Display", 12),
-            Text = currentGrain.Password
+            Text = PasswordEncryption.Decrypt(currentGrain.Password)
         };
 
         generatePasswordButton = new Button
