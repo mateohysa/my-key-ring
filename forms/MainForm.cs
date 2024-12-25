@@ -44,6 +44,9 @@ public partial class MainForm : Form
         currentUsername = username;
         InitializeComponent();
         Size = new Size(FORM_WIDTH, FORM_HEIGHT);
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
+        MinimizeBox = false;
 
         try
         {
@@ -240,14 +243,14 @@ public partial class MainForm : Form
         {
             Dock = DockStyle.Bottom,
             Height = 50,
-            BackColor = Color.White
+            BackColor = Color.FromArgb(245, 245, 245)
         };
 
         addNewButton = new Button
         {
             Text = "Add New",
             Size = new Size(100, 35),
-            Location = new Point(FORM_WIDTH - 340, 8),
+            Location = new Point(FORM_WIDTH - SIDEBAR_WIDTH - 340, 8),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(0, 122, 255),
             ForeColor = Color.White,
@@ -259,7 +262,7 @@ public partial class MainForm : Form
         {
             Text = "Edit",
             Size = new Size(100, 35),
-            Location = new Point(FORM_WIDTH - 230, 8),
+            Location = new Point(FORM_WIDTH - SIDEBAR_WIDTH - 230, 8),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(0, 122, 255),
             ForeColor = Color.White,
@@ -272,7 +275,7 @@ public partial class MainForm : Form
         {
             Text = "Exit",
             Size = new Size(100, 35),
-            Location = new Point(FORM_WIDTH - 120, 8),
+            Location = new Point(FORM_WIDTH - SIDEBAR_WIDTH - 120, 8),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.White,
             ForeColor = Color.FromArgb(0, 122, 255),
@@ -282,6 +285,7 @@ public partial class MainForm : Form
 
         bottomPanel.Controls.AddRange(new Control[] { addNewButton, editButton, exitButton });
         Controls.Add(bottomPanel);
+        bottomPanel.BringToFront();
     }
 
     private void InitializeSelectedPasswordPanel()
