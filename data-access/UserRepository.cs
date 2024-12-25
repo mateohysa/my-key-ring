@@ -99,4 +99,20 @@ public class UserRepository
             return null;
         }
     }
+
+    public void AddUser(User user)
+    {
+        using var connection = new SqliteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+            INSERT INTO Users (Username, MasterPassword)
+            VALUES ($username, $masterPassword)";
+
+        command.Parameters.AddWithValue("$username", user.Username);
+        command.Parameters.AddWithValue("$masterPassword", user.MasterPassword);
+
+        command.ExecuteNonQuery();
+    }
 }
