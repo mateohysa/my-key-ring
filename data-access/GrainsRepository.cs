@@ -32,10 +32,11 @@ public class GrainRepository
                     {
                         Id = reader.GetInt32(0),
                         ServiceName = reader.GetString(1),
-                        Password = reader.GetString(2),
-                        UserId = reader.GetInt32(3),
-                        CreatedAt = reader.GetDateTime(4),
-                        UpdatedAt = reader.GetDateTime(5)
+                        Email = reader.GetString(2),
+                        Password = reader.GetString(3),
+                        UserId = reader.GetInt32(4),
+                        CreatedAt = DateTime.Parse(reader.GetString(5)),
+                        UpdatedAt = DateTime.Parse(reader.GetString(6))
                     });
                 }
             }
@@ -85,21 +86,25 @@ public class GrainRepository
         }
     }
 
-    public async Task<bool> AddGrain(string serviceName, string password, int userId)
+    public async Task<bool> AddGrain(string serviceName, string email, string password, int userId)
     {
-        using var connection = new SqliteConnection(connectionString);
-        await connection.OpenAsync();
-        
-        var command = connection.CreateCommand();
-        command.CommandText = @"
-            INSERT INTO grains (service_name, password, user_id) 
-            VALUES (@service, @password, @userId)";
-        
-        command.Parameters.AddWithValue("@service", serviceName);
-        command.Parameters.AddWithValue("@password", password);
-        command.Parameters.AddWithValue("@userId", userId);
-        
-        return await command.ExecuteNonQueryAsync() > 0;
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            await connection.OpenAsync();
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO grains (service_name, email, password, user_id, created_at, updated_at) 
+                VALUES (@service, @email, @password, @userId, @created, @updated)";
+            
+            command.Parameters.AddWithValue("@service", serviceName);
+            command.Parameters.AddWithValue("@email", email);
+            command.Parameters.AddWithValue("@password", password);
+            command.Parameters.AddWithValue("@userId", userId);
+            command.Parameters.AddWithValue("@created", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            command.Parameters.AddWithValue("@updated", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            
+            return await command.ExecuteNonQueryAsync() > 0;
+        }
     }
 
     public async Task<bool> DeleteGrain(string serviceName, int userId)

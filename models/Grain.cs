@@ -1,6 +1,7 @@
 public class Grain
 {
     private string _serviceName = string.Empty;
+    private string _email = string.Empty;
     private string _password = string.Empty;
 
     public int Id { get; set; }
@@ -9,6 +10,12 @@ public class Grain
     { 
         get => _serviceName;
         set => _serviceName = value ?? throw new ArgumentNullException(nameof(ServiceName));
+    }
+
+    public string Email
+    {
+        get => _email;
+        set => _email = value ?? throw new ArgumentNullException(nameof(Email));
     }
     
     public string Password 
